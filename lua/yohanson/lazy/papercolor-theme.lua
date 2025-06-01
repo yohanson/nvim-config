@@ -1,0 +1,3 @@
+return {
+    'alexeygumirov/papercolor-theme'
+}
