@@ -5,7 +5,7 @@ return {
         branch = 'master',
         lazy = false,
         build = ":TSUpdate",
-        setup = function ()
+        config = function ()
             -- require 'nvim-treesitter.install'.compilers =  { vim.fn.getenv('CC'), "cc", "gcc", "clang", "zig", "cl" }
             require'nvim-treesitter.configs'.setup {
                 -- A list of parser names, or "all" (the four listed parsers should always be installed)
