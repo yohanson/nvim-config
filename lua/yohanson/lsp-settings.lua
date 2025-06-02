@@ -87,7 +87,7 @@ cmp.setup({
         documentation = cmp.config.window.bordered(),
     },
     sources = cmp.config.sources({
-        { name = "copilot", group_index = 2 },
+        { name = "codeium" },
         { name = 'nvim_lsp' },
         { name = 'luasnip' }, -- For luasnip users.
     }, {
