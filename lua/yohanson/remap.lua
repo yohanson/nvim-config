@@ -3,6 +3,12 @@ vim.g.mapleader = " "
 vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
 vim.keymap.set("n", "J", "mzJ`z")
 
+vim.keymap.set("n", "<leader>ok", "a☑️<Esc>")
+vim.keymap.set("n", "<leader>nok", "a⬜<Esc>")
+
+vim.keymap.set("n", "<leader>gh", ":Gitsigns preview_hunk_inline<CR>")
+vim.keymap.set("n", "<leader>gb", ":Gitsigns blame<CR>")
+
 vim.o.langmap = "ФИСВУАПРШОЛДЬТЩЗЙКЫЕГМЦЧНЯЖ;ABCDEFGHIJKLMNOPQRSTUVWXYZ:,фисвуапршолдьтщзйкыегмцчня;abcdefghijklmnopqrstuvwxyz"
 
 
@@ -27,8 +33,8 @@ vim.keymap.set("n", "<F7>", function()
 end)
 
 vim.keymap.set("x", "<leader>p", [["_dP]])
-vim.keymap.set("n", "<leader>]", vim.diagnostic.goto_next)
-vim.keymap.set("n", "<leader>[", vim.diagnostic.goto_prev)
+vim.keymap.set("n", "<leader>]", function () vim.diagnostic.jump({count = 1, float = true}) end)
+vim.keymap.set("n", "<leader>[", function () vim.diagnostic.jump({count = -1, float = true}) end)
 
 local builtin = require('telescope.builtin')
 vim.keymap.set('n', '<leader>ff', builtin.find_files, {})

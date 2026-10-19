@@ -9,6 +9,7 @@ vim.opt.relativenumber = true
 vim.opt.fixeol = false
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
+vim.opt.guicursor = "n-c-sm:block-blinkon500-blinkoff500,v:block-blinkon0,i-ci-ve:ver25,r-cr-o:hor20,t:block-blinkon500-blinkoff500-TermCursor"
 
 vim.opt.listchars = 'tab:⍿·,trail:⋅'
 vim.opt.list = true
@@ -18,6 +19,9 @@ vim.o.winborder = 'rounded'
 -- trying to enable treesitter indent:
 vim.opt.smartindent = false
 vim.opt.autoindent = false
+
+-- good for copying files, bad for jumping around
+-- vim.g.netrw_keepdir = 0
 
 vim.o.fileencodings = 'ucs-bom,utf-8,cp866,cp1251'
 vim.cmd('set title')
@@ -33,87 +37,7 @@ vim.cmd('set title')
 --        vim.fn.setpos(".", save_cursor)
 --    end,
 --})
-vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
-    pattern = {
-        "*/coding/**.s362",
-        "*/coding/**.hss",
-    },
-    callback = function(ev)
-        vim.bo.filetype = 'cpp'
-    end,
-})
 
-vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
-    pattern = {
-        "**.vue",
-        "**.js",
-    },
-    callback = function(ev)
-        vim.opt.tabstop = 2
-        vim.opt.shiftwidth = 2
-        vim.opt.suffixesadd:append(".vue")
-    end,
-})
-
-vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
-    pattern = {
-        "**.php",
-    },
-    callback = function(ev)
-        vim.opt.tabstop = 4
-        vim.opt.shiftwidth = 4
-    end,
-})
-
-vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
-    pattern = {
-        "*/coding/**.sql",
-    },
-    callback = function(ev)
-        vim.bo.filetype = 'plsql'
-    end,
-})
-
-vim.api.nvim_create_autocmd({ "FileReadPost" }, {
-    pattern = {
-        "*/coding/**",
-    },
-    callback = function(ev)
-        local content = vim.api.nvim_buf_get_lines(0, 0, vim.api.nvim_buf_line_count(0), false)
-        content = table.concat(content)
-        tbl = {stringbyte(str, 1, #str)} -- Note: This is about 15% faster than calling string.byte for every character.
-        for i = 1, #tbl do
-            c = int(tbl[i] / 16)
-            echo(c);
-            if (i == 100) then
-                break;
-            end
-        end
-    end,
-})
-
-vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
-    pattern = {
-        "docker-compose*.yml",
-        "docker-compose*.yaml",
-        "compose*.yml",
-        "compose*.yaml",
-    },
-    callback = function(ev)
-        vim.bo.filetype = 'yaml.docker-compose'
-    end,
-})
-
-vim.api.nvim_create_autocmd('FileType', {
-    desc = 'SVN commits must be in cp1251',
-
-    pattern = 'svn',
-    callback = function (opts)
-        vim.bo.fileencoding = 'cp1251';
-        vim.bo.endofline = false;
-        -- vim.bo.fixeol = true
-    end,
-})
 
 vim.api.nvim_create_user_command('ToUtfBom', function()
     vim.cmd("set bomb");
@@ -140,5 +64,20 @@ vim.diagnostic.config({
             -- [vim.diagnostic.severity.WARN] = 'WarningMsg',
         },
     },
+    -- virtual_text = true,
+    -- virtual_lines = true,
 })
 
+-- ~/.config/nvim/init.lua
+vim.api.nvim_create_autocmd("BufReadPost", {
+  pattern = "*",
+  callback = function()
+    if vim.wo.diff then
+      local opts = { buffer = true, noremap = true, silent = true }
+      vim.keymap.set('n', '<leader>gl', ':diffget //2<CR>', opts)  -- get LOCAL
+      vim.keymap.set('n', '<leader>gr', ':diffget //3<CR>', opts)  -- get REMOTE
+      vim.keymap.set('n', '<leader>gb', ':diffget //1<CR>', opts)  -- get BASE
+      vim.keymap.set('n', '<leader>gp', ':diffput<CR>',         opts)
+    end
+  end,
+})

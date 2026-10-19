@@ -3,6 +3,7 @@ require('yohanson.lazy_init')
 require('yohanson.remap')
 require('yohanson.colors')
 require('yohanson.lsp-settings')
+require('yohanson.filetypes')
 
 vim.api.nvim_create_autocmd("LspAttach", {
     callback = function(e)

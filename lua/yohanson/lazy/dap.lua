@@ -15,9 +15,7 @@ return {
                     request = "launch",
                     name = "Listen for Xdebug",
                     port = 9003,
-                    pathMappings = {
-                        ["/var/www"] = vim.fn.getcwd() .. "/"
-                    }
+                    pathMappings = getPathMappings(),
                 }
             }
 
@@ -33,7 +31,7 @@ return {
             vim.keymap.set('n', '<Leader>lp', function() require('dap').set_breakpoint(nil, nil, vim.fn.input('Log point message: ')) end)
 
             vim.fn.sign_define('DapBreakpoint', {text='🛑', texthl='', linehl='', numhl=''})
-            vim.fn.sign_define('DapStopped', {text='➜', texthl='', linehl='', numhl=''})
+            vim.fn.sign_define('DapStopped', {text='➡️', texthl='', linehl='', numhl=''})
 
             dap.listeners.after.event_stopped['custom_bell'] = function()
                 -- Send ASCII bell character to terminal
