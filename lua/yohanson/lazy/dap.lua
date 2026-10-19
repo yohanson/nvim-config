@@ -1,3 +1,14 @@
+local function getPathMappings()
+    local mappings = require('yohanson.dap-pathmappings')
+    for dir, mapping in pairs(mappings) do
+        if vim.fn.getcwd() == dir then
+            return mapping
+        end
+    end
+    return {
+        [vim.fn.getcwd()] = vim.fn.getcwd() .. "/"
+    }
+end
 
 return {
     {
